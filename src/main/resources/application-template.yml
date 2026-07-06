@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: demo
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY:your-api-key-here}
+      base-url: https://api.openai.com
+      chat:
+        options:
+          model: gpt-4o
+          temperature: 0.1
+
+# OCR 自定义配置
+ocr:
+  default-prompt: "请识别图片中的文字，只输出识别结果，不要添加任何额外说明或解释。"
+  max-file-size: 10MB
