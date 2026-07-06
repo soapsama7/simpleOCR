@@ -106,7 +106,7 @@ demo/
 
 **流程**：
 ```
-用户 Win+Shift+S 截图 → 图片在剪贴板 → 运行 OcrClipboardClient.main()
+用户截图 → 图片在剪贴板 → 运行 OcrClipboardClient.main()
 → 调用本地 OCR API → 文本写回剪贴板 → Ctrl+V 粘贴
 ```
 
@@ -132,9 +132,9 @@ demo/
 
 1. **Spring AI 版本**：Spring Boot 3.5.16 对应的 Spring AI 版本需要在添加依赖时实测确认（预计 1.1.x 或更高），可能需要添加 Spring Milestone 仓库
 2. **OCR Prompt 设计**：需要在 Service 中编写合适的 system/user prompt 引导 LLM 做 OCR（如"请识别图片中的文字，只输出识别结果，不要额外说明"）
-3. **剪贴板客户端运行方式**：是打包成独立 jar 还是用 `mvn exec:java` 直接运行？建议直接运行，简化 MVP
+3. **剪贴板客户端运行方式**：直接运行
 4. **MySQL 依赖**：当前 pom.xml 有 mysql-connector-j，OCR 工具不需要——保留不动（避免无关变更），实际不使用
-5. **图片大小限制**：是否需要在前端/后端做文件大小校验？建议 MVP 先不做，后续视情况加
+5. **图片大小限制**：先不做文件大小校验
 
 ---
 
@@ -142,6 +142,6 @@ demo/
 
 1. 配置有效的 OpenAI 兼容 API（或用 Ollama 本地模型 + OpenAI 兼容端点）
 2. 启动 Spring Boot：`mvn spring-boot:run`
-3. Win+Shift+S 截图
+3. 截图
 4. 运行 `OcrClipboardClient`
 5. 在任意文本框 Ctrl+V，确认识别文本正确粘贴
