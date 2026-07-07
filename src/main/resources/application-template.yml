@@ -11,9 +11,3 @@ spring:
         options:
           model: gpt-4o
           temperature: 0.1
-
-# OCR 自定义配置
-ocr:
-  system-prompt: "你是一个专业的OCR文字识别助手。你的任务是准确识别图片中的所有文字，只输出识别结果，不要添加任何解释、说明或额外内容。"
-  user-prompt: "请识别图片中的所有文字。"
-  max-file-size: 10MB
