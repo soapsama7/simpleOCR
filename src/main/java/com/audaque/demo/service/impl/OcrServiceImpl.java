@@ -72,7 +72,8 @@ public class OcrServiceImpl implements OcrService, ApplicationRunner {
                 image.getOriginalFilename(), imageBytes.length, contentType);
 
         String result = chatClient.prompt()
-                .user(u -> u.text(ocrProperties.getDefaultPrompt()).media(media))
+                .system(ocrProperties.getSystemPrompt())
+                .user(u -> u.text(ocrProperties.getUserPrompt()).media(media))
                 .call()
                 .content();
 
