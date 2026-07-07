@@ -67,6 +67,6 @@ public class OcrServiceImpl implements OcrService {
         long elapsed = System.currentTimeMillis() - start;
         log.info("OCR 识别完成，耗时: {}ms, 结果长度: {}", elapsed, result != null ? result.length() : 0);
 
-        return new OcrResponse(true, result, model, elapsed);
+        return OcrResponse.success(result, model, elapsed);
     }
 }

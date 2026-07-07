@@ -13,9 +13,11 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 import java.io.UncheckedIOException;
 
 /**
- * 全局异常处理
+ * 全局异常处理（HTTP 请求链路）
  * <p>
- * 统一拦截 Controller → Service 层抛出的异常，返回 OcrResponse 格式的错误信息。
+ * 注意：{@code @RestControllerAdvice} 仅拦截 Controller 方法抛出的异常。
+ * 后台线程（如 ClipboardMonitorService）的异常无法被此处理器捕获，
+ * 需在线程内部使用 {@link OcrResponse#error(String)} 统一构建错误响应。
  */
 @Slf4j
 @RestControllerAdvice
@@ -26,7 +28,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public OcrResponse handleMissingParam(Exception e) {
         log.warn("请求参数缺失: {}", e.getMessage());
-        return new OcrResponse(false, "请上传图片文件（参数名: image）", "N/A", 0);
+        return OcrResponse.error("请上传图片文件（参数名: image）");
     }
 
     /** 文件上传异常（格式不支持等） */
@@ -34,7 +36,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public OcrResponse handleMultipartException(MultipartException e) {
         log.warn("文件上传异常: {}", e.getMessage());
-        return new OcrResponse(false, "文件上传失败: " + e.getMessage(), "N/A", 0);
+        return OcrResponse.error("文件上传失败: " + e.getMessage());
     }
 
     /** 图片读取失败（IO 异常） */
@@ -43,7 +45,7 @@ public class GlobalExceptionHandler {
     public OcrResponse handleIOException(UncheckedIOException e) {
         log.error("图片读取失败", e);
         String detail = e.getCause() != null ? e.getCause().getMessage() : e.getMessage();
-        return new OcrResponse(false, "图片读取失败: " + detail, "N/A", 0);
+        return OcrResponse.error("图片读取失败: " + detail);
     }
 
     /** LLM 调用失败 / 其他未捕获异常 */
@@ -51,6 +53,6 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public OcrResponse handleGeneral(Exception e) {
         log.error("服务内部异常", e);
-        return new OcrResponse(false, "服务内部错误: " + e.getMessage(), "N/A", 0);
+        return OcrResponse.error("服务内部错误: " + e.getMessage());
     }
 }
