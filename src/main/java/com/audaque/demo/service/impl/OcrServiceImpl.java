@@ -104,6 +104,15 @@ public class OcrServiceImpl implements OcrService, ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
+        // 启动前先检测 LLM 连通性，不通过则终止程序
+        try {
+            health();
+            log.info("LLM 连通性检测通过");
+        } catch (Exception e) {
+            log.error("LLM 连通性检测失败，程序终止: {}", e.getMessage());
+            System.exit(1);
+        }
+
         Thread monitor = new Thread(this::monitorClipboard, "clipboard-monitor");
         monitor.setDaemon(true);
         monitor.start();
