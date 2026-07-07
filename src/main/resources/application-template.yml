@@ -1,6 +1,8 @@
 spring:
   application:
     name: demo
+  main:
+    headless: false
   ai:
     openai:
       api-key: ${OPENAI_API_KEY:your-api-key-here}
