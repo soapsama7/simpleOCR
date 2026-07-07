@@ -51,7 +51,7 @@ public class OcrServiceImpl implements OcrService {
             log.info("开始 OCR 识别，文件: {}, 大小: {} bytes, 类型: {}",
                     image.getOriginalFilename(), imageBytes.length, contentType);
 
-            String result = chatClient.prompt()
+                    String result = chatClient.prompt()
                     .user(u -> u.text(ocrProperties.getDefaultPrompt()).media(media))
                     .call()
                     .content();
